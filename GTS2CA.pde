@@ -356,7 +356,7 @@ void createNewTSWindow() {
   label1.setOpaque(false);
   label1.setFont(new java.awt.Font("Montserrat", java.awt.Font.PLAIN, 12));
   txa1 = new GTextArea(winNewTS, 10, 60, 280, 160);
-  txa1.setPromptText("Production rules* (ej. 0->01, 1->b0)");
+  txa1.setPromptText("Production rules* (ej. 0->01, 1->10)");
   txa1.setText("");
   txf1 = new GTextField(winNewTS, 10, 230, 140, 20);
   txf1.setPromptText("Deletion number P*");
@@ -572,42 +572,47 @@ void saveJSON(GButton button, GEvent event) {
   JSONObject newJSON = new JSONObject();
   JSONObject tsJSON = new JSONObject();
   JSONObject caJSON = new JSONObject();
-  tsJSON.setInt("P", gts.p);
+  if (isTS) {
+    tsJSON.setInt("P", gts.p);
 
-  JSONArray tsSigma = new JSONArray();
-  for (int i = 0; i < gts.getSymbols().length; i++)
-    tsSigma.setString(i, gts.getSymbols()[i]);
-  tsJSON.setJSONArray("Sigma", tsSigma);
+    JSONArray tsSigma = new JSONArray();
+    for (int i = 0; i < gts.getSymbols().length; i++)
+      tsSigma.setString(i, gts.getSymbols()[i]);
+    tsJSON.setJSONArray("Sigma", tsSigma);
 
-  JSONArray tsRules = new JSONArray();
-  for (int i = 0; i < gts.getRules().size(); i++)
-    tsRules.setString(i, gts.getRules().get(i));
-  tsJSON.setJSONArray("Rules", tsRules);
+    JSONArray tsRules = new JSONArray();
+    for (int i = 0; i < gts.getRules().size(); i++)
+      tsRules.setString(i, gts.getRules().get(i));
+    tsJSON.setJSONArray("Rules", tsRules);
 
-  JSONArray caSigma = new JSONArray();
-  for (int i = 0; i < ca.getAlpha().length; i++)
-    caSigma.setString(i, ca.getAlpha()[i]);
-  caJSON.setJSONArray("Sigma", caSigma);
+    JSONArray caSigma = new JSONArray();
+    for (int i = 0; i < ca.getAlpha().length; i++)
+      caSigma.setString(i, ca.getAlpha()[i]);
+    caJSON.setJSONArray("Sigma", caSigma);
 
-  JSONArray caColors = new JSONArray();
-  for (int i = 0; i < alphaColors.length; i++)
-    caColors.setInt(i, alphaColors[i]);
-  caJSON.setJSONArray("Colors", caColors);
+    JSONArray caColors = new JSONArray();
+    for (int i = 0; i < alphaColors.length; i++)
+      caColors.setInt(i, alphaColors[i]);
+    caJSON.setJSONArray("Colors", caColors);
 
-  JSONArray caRules = new JSONArray();
-  for (int i = 0; i < gts.getCARules().size(); i++)
-    caRules.setString(i, gts.getCARules().get(i));
-  caJSON.setJSONArray("Rules", caRules);
+    JSONArray caRules = new JSONArray();
+    for (int i = 0; i < gts.getCARules().size(); i++)
+      caRules.setString(i, gts.getCARules().get(i));
+    caJSON.setJSONArray("Rules", caRules);
 
-  newJSON.setJSONObject("ts", tsJSON);
-  newJSON.setJSONObject("ca", caJSON);
-  String pathName = G4P.selectOutput("Save as JSON...", ".json", "JSON Files");
-  if (pathName != null) {
-    if (pathName.trim().toLowerCase().endsWith(".json"))
-      saveJSONObject(newJSON, pathName);
-    else
-      saveJSONObject(newJSON, pathName + ".json");
+    newJSON.setJSONObject("ts", tsJSON);
+    newJSON.setJSONObject("ca", caJSON);
+    String pathName = G4P.selectOutput("Save as JSON...", ".json", "JSON Files");
+    if (pathName != null) {
+      if (pathName.trim().toLowerCase().endsWith(".json"))
+        saveJSONObject(newJSON, pathName);
+      else
+        saveJSONObject(newJSON, pathName + ".json");
+    }
+  } else {
+    G4P.showMessage(this, "There is not a cellular automata, create new or open some one in File", "Cellular automata missed", G4P.ERROR_MESSAGE);
   }
+
   filePrincipal.setCollapsed(true);
 }
 
