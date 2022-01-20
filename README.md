@@ -4,7 +4,8 @@
 1. Descargar los archivos de este repositorio.
 2. Descargar e instalar el IDE de Processing en https://processing.org/download (compatible con Windows, Linux y MAC OS).
 3. En el IDE de Processing, abrir el archivo GTS2CA.pde.
-4. Clic en Play.
+4. Instalar librerias 'grafica' y 'G4P'.
+5. Clic en Play.
 
 ¿Comó usar?
 
