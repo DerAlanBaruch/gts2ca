@@ -36,9 +36,9 @@ void settings() {
   size(280, 490, JAVA2D);
 }
 
-GWindow winNewTS = null, winSimulatorCA = null, winColors = null, winStatistics = null, winTSLengthRandom = null;
+GWindow winNewTS = null, winSimulatorCA = null, winColors = null, winStatistics = null, winAbout = null, winTSLengthRandom = null;
 GTextArea txa1;
-GTextField txf1, txf2, txf3, txfw, txfh;
+GTextField txf1, txf2, txf3, txfw, txfh, txtabout;
 GSlider sdr1;
 GToggleGroup togG1Options, togGSptions; 
 GOption grp1_a, grp1_b, grp1_c, grp1_d; 
@@ -67,6 +67,10 @@ void win_newts_draw(PApplet appc, GWinData data) {
 }
 
 void win_colors_draw(PApplet appc, GWinData data) {
+  appc.background(230, 230, 255);
+}
+
+void win_about_draw(PApplet appc, GWinData data) {
   appc.background(230, 230, 255);
 }
 
@@ -268,11 +272,23 @@ void closeRandomTSCallback(GWindow window) {
   winTSLengthRandom = null;
 }
 
+void closeAboutCallback(GWindow window) {
+  winAbout = null;
+}
+
 void btnStatisticsCallback(GButton source, GEvent event) {
   if (winStatistics == null) {
     createStatisticsWindow();
   } else {
     winStatistics.close();
+  }
+}
+
+void btnAboutCallback(GButton source, GEvent event) {
+  if (winAbout == null) {
+    createAboutWindow();
+  } else {
+    winAbout.close();
   }
 }
 
@@ -365,6 +381,16 @@ void createNewTSWindow() {
   summit.setText("Create");
   summit.addEventHandler(this, "createTS");
   filePrincipal.setCollapsed(true);
+}
+
+void createAboutWindow() {
+  winAbout = GWindow.getWindow(this, "About GTS2CA", 50, 50, 270, 130, JAVA2D);
+  winAbout.setActionOnClose(G4P.CLOSE_WINDOW);
+  winAbout.addDrawHandler(this, "win_about_draw");
+  winAbout.addOnCloseHandler(this, "closeAboutCallback");
+  GLabel label4 = new GLabel(winAbout, 20, 20, 230, 90);
+  label4.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  label4.setText("Dev: Alan Baruch Cerna González\nEmail: acernag1500@alumno.ipn.mx\n \nArtificial Life Robotics Lab\nESCOM - IPN\n2022");
 }
 
 void createLengthRandomWindow() {
@@ -886,4 +912,9 @@ void createGUI() {
   GButton btnSimulatorCA = new GButton(this, 80, 450, 120, 20);
   btnSimulatorCA.setText("Run Simulation");
   btnSimulatorCA.addEventHandler(this, "btnSimulatorCACallback");
+  
+  GButton btnOpenAbout = new GButton(this, 235, 0, 45, 20);
+  btnOpenAbout.setText("About");
+  btnOpenAbout.addEventHandler(this, "btnAboutCallback");
+  btnOpenAbout.setTextAlign(GAlign.LEFT,GAlign.CENTER);
 }
